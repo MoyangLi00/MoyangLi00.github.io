@@ -58,11 +58,11 @@
         </h3>
     <!-- <hr> -->
     <p class="authors">
-        <a href="https://moyangli00.github.io/" class="author-color"> Moyang Li</a><sup> 1,2</sup>&#160;&#160;
-        <a href="https://wangpeng000.github.io/" class="author-color"> Peng Wang</a><sup> 1,3</sup>&#160;&#160;
+        <a href="https://moyangli00.github.io/" class="author-color"> Moyang Li</a><sup> 1,2*</sup>&#160;&#160;
+        <a href="https://wangpeng000.github.io/" class="author-color"> Peng Wang</a><sup> 1,3*</sup>&#160;&#160;
         <a href="https://scholar.google.com/citations?user=mN764NsAAAAJ&hl=en" class="author-color"> Lingzhe Zhao</a><sup> 1</sup>&#160;&#160;
         <a href="https://scholar.google.com/citations?user=0z2qluIAAAAJ&hl" class="author-color"> Bangyan Liao</a><sup> 1,3</sup>&#160;&#160;
-        <a href="https://ethliup.github.io/" class="author-color"> Peidong Liu</a><sup> 1,3</sup>&#160;&#160;
+        <a href="https://ethliup.github.io/" class="author-color"> Peidong Liu</a><sup> 1,3&dagger;</sup>&#160;&#160;
     </p>
 
     <p id="institution">
@@ -118,7 +118,7 @@
                 by modeling the physical image formation process of a rolling shutter camera.
             </p>
             <div class="columns-5 w-row">
-                <img src="img/overview.png" style="width:95%; margin-right:0px; margin-top:0px;">
+                <img src="img/overview.png" style="width:80%; margin-right:0px; margin-top:0px;">
             </div>
             <p class="paragraph-3 nerf_text">
                 We propose to represent the 3D scene with NeRF and model the camera motion trajectory
@@ -130,7 +130,11 @@
                 Image Formation Model
             </h2>
 
-            <style>
+            <div class="columns-5 w-row">
+                <img src="img/camera_model.png" style="width:80%; margin-right:0px; margin-top:0px;">
+            </div>
+
+            <!-- <style>
                 .image-container {
                   display: flex;
                 }
@@ -143,7 +147,7 @@
             <div class="image-container">
                 <img src="img/GS_formation_model.jpg" alt="GS_formation_model" class="image">
                 <img src="img/RS_formation_model.jpg" alt="RS_formation_model" class="image">
-            </div>
+            </div> -->
 
             <p class="paragraph-3 nerf_text">
                 Different from global shutter cameras(left figure), each scanline/image row of the rolling shutter camera(right figure) is captured at different timestamps. Assuming the readout direction of RS camera is from top to bottom, this process can be mathematically modeled as (assuming infinitesimal exposure time):                
@@ -162,16 +166,16 @@
             Rolling Shutter Effect Correction
         </h2>
         <div class="columns-5 w-row">
-                <img src="img/fig_rs_effect_correction.png" style="width:95%; margin-right:0px; margin-top:0px;">
+                <img src="img/fig_rs_effect_correction.png" style="width:80%; margin-right:0px; margin-top:0px;">
         </div>
         <div class="columns-5 w-row">
-            <img src="img/fig_rs_correction_real_data.png" style="width:95%; margin-right:0px; margin-top:0px;">
+            <img src="img/fig_rs_correction_real_data.png" style="width:80%; margin-right:0px; margin-top:0px;">
         </div>
         <!-- Paper video. -->
         <div class="columns is-centered has-text-centered">
             <div class="column is-four-fifths">
                 <div class="content has-text-justified">
-                    <video id="teaser" autoplay muted loop playsinline width="95%">
+                    <video id="teaser" autoplay muted loop playsinline width="80%">
                         <source src="video/synthetic_datasets.mp4"
                             type="video/mp4">
                     </video>
@@ -192,12 +196,25 @@
         </h2>
         
         <div class="columns-5 w-row">
-            <img src="img/fig_syn_novel_view.png" style="width:95%; margin-right:0px; margin-top:0px;">
+            <img src="img/fig_syn_novel_view.png" style="width:80%; margin-right:0px; margin-top:0px;">
             </div>
         <!-- </div> -->
         <p class="paragraph-3 nerf_text">
             Our method could take advantage of <b>multi-view information</b> instead of only two views, 
             and thus performs better than existing methods in terms of novel view image synthesis.
+        </p>
+
+        <h2 class="grey-heading_nerf">
+            Trajectory Visualization
+        </h2>
+        
+        <div class="columns-5 w-row">
+            <img src="img/traj.png" style="width:80%; margin-right:0px; margin-top:0px;">
+            </div>
+        <!-- </div> -->
+        <p class="paragraph-3 nerf_text">
+            The experimental results demonstrate that our method is able to estimate the motion trajectories 
+            with a sequence of rolling shutter images.
         </p>
 
         </br><hr></br>
