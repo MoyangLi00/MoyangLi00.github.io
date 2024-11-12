@@ -104,9 +104,10 @@
             <div class='col offset-sm-1'>
                 <h1>Bio</h1>
                 <p>
-                    I'm currently a master student at <a href="https://ethz.ch/de.html">ETH Zurich</a>. I received my Bachelor's degree from <a href="https://english.hust.edu.cn">Huazhong University of Science and Technology</a>. I was an intern at CVGL supervised by Prof. <a href="https://ethliup.github.io/">Peidong Liu</a>.
+                    I'm currently a master student at <a href="https://ethz.ch/de.html">ETH Zurich</a>. I received my Bachelor's degree from <a href="https://english.hust.edu.cn">Huazhong University of Science and Technology</a>. I work with Prof. <a href="https://scholar.google.ch/citations?user=DO3quJYAAAAJ&hl=en"> Marco Hutter </a> at <a href="https://rsl.ethz.ch/">RSL</a> for my corrent research. I was an intern at CVGL supervised by Prof. <a href="https://ethliup.github.io/">Peidong Liu</a>.
                     <br><br>
-                    My research interests lie at computer vision and generative models.
+                    My research is focused on computer vision and robotics, with a focus on 3D computer vision (e.g. 3D reconstruction, SLAM).
+                    I am actively looking for the Ph.D. position in 3D vision and robotics starting from Fall 2025.
                     <br>
 
                 </p>
@@ -144,8 +145,47 @@
                             <a href="https://github.com/WU-CVGL/USB-NeRF">[Code]</a>
                             <a href="https://drive.google.com/file/d/1ndBlTCaWkQv1rAPXbGSVmUqRACCvfJOl/view?usp=sharing">[Dataset]</a>
                         </div>
+                        USB-NeRF can remove rolling shutter effect and realize high-quality scene reconstruction from a sequence of rolling shutter images.
                     </div>
                 </div>
+                <div class='vspace-top'>
+                  <h1>Projects</h1>
+                </div>
+                <div class='row vspace-top'>
+                  <div class="col-sm-3">
+                        <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
+                            <source src="videos/mds_nerf_record3d_sheep.mp4" type="video/mp4">
+                        </video>
+                    </div>
+
+                    <div class="col">
+                        <div class='paper-title'>
+                          MDS-NeRF: Neural Radiance Fields with Marigold Depth Supervision
+                        </div>
+                        <div>
+                            <!-- <a href="https://sinoyou.github.io/nelf-pro/">[Project page]</a> -->
+                            <a href="https://moyangli00.github.io/mds_nerf/">[Project page]</a>
+                            <a href="https://github.com/MoyangLi00/MDS-NeRF">[Code]</a>
+                        </div>
+                        We employ the affine-invariant depth supervision to improve the quality of the few-shot scene reconstruction. Our method could estimate the scales and offsets of Mairgold prediction, improve the quality of the scene reconstruction.
+                    </div>
+                </div>
+                
+              <div class='row vspace-top'>
+                <div class="col-sm-3">
+                  <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
+                      <source src="videos/real_rocks_point_light.mp4" type="video/mp4">
+                  </video>
+              </div>
+
+                <div class="col">
+                  <div class='paper-title'>
+                    Dynamic Lighting in Neural Radiance Fields
+                  </div>
+                  <div>
+                  </div>
+                  Employ physical-based rendering to decompose the scene into illumunation, material, and geometry. We use the combination of point light source and environment map to model the dynamic lighting of the scene. Our method can remove the heavy shadow caused by uneven lighting and improve the quality of the scene reconstruction.
+              </div>
             </div>
         </div>
     </div>

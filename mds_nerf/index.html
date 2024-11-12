@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Marigold-3DV</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:image" content="https://marigold-3dv.github.io/img/overview_combined.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1711">
+    <meta property="og:image:height" content="576">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://marigold-3dv.github.io/"/>
+    <meta property="og:title" content="Marigold: Is it all sunshine and Marigolds?" />
+    <meta property="og:description" content="3D reconstruction methods such as Neural Radiance Fields (NeRFs) excel at rendering photorealistic novel views of complex scenes. However, recovering a high-quality NeRF typically requires tens to hundreds of input images, resulting in a time-consuming capture process. We present ReconFusion to reconstruct real-world scenes using only a few photos. Our approach leverages a diffusion prior for novel view synthesis, trained on synthetic and multiview datasets, which regularizes a NeRF-based 3D reconstruction pipeline at novel camera poses beyond those captured by the set of input images. Our method synthesizes realistic geometry and texture in underconstrained regions while preserving the appearance of observed regions. We perform an extensive evaluation across various real-world datasets, including forward-facing and 360-degree scenes, demonstrating significant performance improvements over previous few-view NeRF reconstruction approaches."/>
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ReconFusion: 3D Reconstruction with Diffusion Priors" />
+    <meta name="twitter:description" content="3D reconstruction methods such as Neural Radiance Fields (NeRFs) excel at rendering photorealistic novel views of complex scenes. However, recovering a high-quality NeRF typically requires tens to hundreds of input images, resulting in a time-consuming capture process. We present ReconFusion to reconstruct real-world scenes using only a few photos. Our approach leverages a diffusion prior for novel view synthesis, trained on synthetic and multiview datasets, which regularizes a NeRF-based 3D reconstruction pipeline at novel camera poses beyond those captured by the set of input images. Our method synthesizes realistic geometry and texture in underconstrained regions while preserving the appearance of observed regions. We perform an extensive evaluation across various real-world datasets, including forward-facing and 360-degree scenes, demonstrating significant performance improvements over previous few-view NeRF reconstruction approaches."/>
+    <meta name="twitter:image" content="https://reconfusion.github.io/img/overview_combined.png" />
+
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤔</text></svg>">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="css/fontawesome.all.min.css">
+	<link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+
+	<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZERS5BVPS"></script>
+  <script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'G-8ZERS5BVPS');
+  </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+	<script defer src="js/fontawesome.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/synced_video_selector.js"></script>
+
+</head>
+
+<body style="padding: 1%; width: 100%">
+    <div class="container-lg text-center" style="max-width: 1500px; margin: auto;" id="main">
+    <!-- <div class="container" id="main"> -->
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <b>MDS-NeRF</b>: Neural Radiance Fields with Marigold Depth Supervision</br>
+            </h2>
+        </div>
+        <div class="row text-center">
+<div class="col-md-3">
+    </div>
+            <div class="col-md-6 text-center">
+                <ul class="list-inline">
+                    <li>
+                            <a href="https://moyangli00.github.io/">Moyang Li</a>
+                    </li>
+                    <wbr>
+                </ul>
+            </div>
+
+<div class="col-md-3">
+</div>
+    <div class="col-md-12 text-center">
+        ETH Zurich
+    </div>
+    <br>
+
+    <div class="row text-center">
+
+                <span class="link-block">
+
+            <a href="https://github.com/MoyangLi00/MDS-NeRF"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                    <i class="far fa-file-code"></i>
+                </span>
+                <span>Code</span>
+            </a>
+            </span>
+    </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <br>
+                <p class="text-justify">
+                    Neural Radiance Fields (NeRF) achieved impressive results in novel view synthesis given dense multi-view images.
+                    However, NeRF face challenges of fitting incorrect geometries when given an insufficient number of input views.
+                    In this project, we employ Marigold, a state-of-the-art affine-invariant depth prediction method, to supervise NeRF training with few views.
+                    Marigold depth could provide geometry priors for NeRF training, which helps to improve the performance of scene reconstruction.
+                </p>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Method
+                </h3>
+                <br>
+                <image src="img/overview_recon.png" width=60% style="display: block; margin: auto;"></image>
+                <br>
+                <p class="text-justify">
+                    Marigold only predict affine-invariant depth which exists the scale and offset difference from metric depth, so it could not be directly used for depth supervision.
+                    In this project, we jointly optimize scales, offsets of views and NeRF representation based on mutli-view geometry.
+                    Our method could recover metric depth and realize high-fidelty scene reconstruction simultaneously.
+                    We use nerfacto as our NeRF backbone due to its fast speed.
+                </p>
+                <br>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2" id="area1">
+                <h3>
+				  Results
+                </h3>
+                <br>
+                <div class="text-center ">
+                    <ul class="nav nav-pills center-pills">
+                        <li class="method-pill active" data-value="fortress"
+                            onclick="selectCompVideo(this, 'area1')"><a>Fortress</a></li>
+                        <li class="method-pill" data-value="leaves"
+                            onclick="selectCompVideo(this, 'area1')"><a>Leaves</a></li>
+                        <li class="method-pill" data-value="orchids"
+                            onclick="selectCompVideo(this, 'area1')"><a>Orchids</a></li>
+                        <li class="method-pill" data-value="room"
+                            onclick="selectCompVideo(this, 'area1')"><a>Room</a></li>
+                    </ul>
+                    <ul class="nav nav-pills center-pills">
+                        <li class="method-pill" data-value="fern"
+                        onclick="selectCompVideo(this, 'area1')"><a>Fern</a></li>
+                        <li class="method-pill" data-value="flower"
+                            onclick="selectCompVideo(this, 'area1')"><a>Flower</a></li>
+                        <li class="method-pill" data-value="horns"
+                            onclick="selectCompVideo(this, 'area1')"><a>Horns</a></li>
+                        <li class="method-pill" data-value="trex"
+                            onclick="selectCompVideo(this, 'area1')"><a>Trex</a></li>
+                    </ul>
+                </div>
+
+                <div class="text-center">
+                    <div class="video-container">
+                        <video class="video" style="height: 280px; max-width: 100%;" id="compVideoArea1" loop playsinline autoplay muted>
+                            <source id="sourceArea1" src="videos/h264_fortress.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+                    <p class="text-justify" style="text-align: center;">
+                        Nerfacto (left) vs Ours (right) on LLFF dataset. Scene trained on <span id="compVideoValue">3</span> views. Try selecting scenes!
+                    </p>
+                    <br>
+                </div>
+            </div>
+
+            <br>
+            <!-- <div class="row"> -->
+            <div class="col-md-8 col-md-offset-2" id="area2">
+
+                <div class="text-center ">
+                    <ul class="nav nav-pills center-pills">
+                        <li class="method-pill active" data-value="record3d_sheep"
+                            onclick="selectCompVideo(this, 'area2')"><a>Sheep</a></li>
+                        <li class="method-pill" data-value="record3d_flower"
+                            onclick="selectCompVideo(this, 'area2')"><a>Flower</a></li>
+                    </ul>
+                </div>
+
+                    <!-- <script>
+                        activeMethodPill = document.querySelector('.method-pill.active-pill');
+                        activeScenePill = document.querySelector('.scene-pill.active-pill');
+                        activeModePill = document.querySelector('.mode-pill.active-pill');
+                    </script> -->
+
+                <div class="text-center">
+                    <div class="video-container">
+                        <video class="video" style="height: 280px; max-width: 100%;" id="compVideoArea2" loop playsinline autoplay muted>
+                            <source id="sourceArea2" src="videos/h264_record3d_sheep.mp4" type="video/mp4" />
+                        </video>
+                    </div>
+                    <p class="text-justify" style="text-align: center; margin-bottom: 2em;">
+                        Nerfacto (left) vs Ours (right) on Record3D dataset. Scene trained on <span id="compVideoValue">9</span> views. Try selecting scenes!
+                    </p>
+                </div>
+            </div>
+            <br>
+
+
+
+        <br>
+        <br>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <br>
+                <p class="text-justify">
+                I would like to thank our supervisors Mihai Dusmanu and Zuria Bauer for their valuable guidance in this 3DV project.
+                    <br><br>
+                The website template was borrowed from <a href="http://mgharbi.com/">Michaël Gharbi</a> and <a href="https://dorverbin.github.io/refnerf">Ref-NeRF</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
