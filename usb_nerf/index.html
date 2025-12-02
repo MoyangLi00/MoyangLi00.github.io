@@ -26,6 +26,68 @@
     .author-color {
          color: rgb(226, 131, 83);
     }
+    .nerf_title_v2 {
+        line-height: 1.1;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.5px;
+    }
+    .nerf_subheader_v2 {
+        margin-top: 0.5rem;
+    }
+    .nerf_header_v2 {
+        font-size: 1.35rem;
+        font-weight: 500;
+        text-align: center;
+        margin: 1rem 0;
+        color: inherit;
+    }
+    .equation-block {
+        text-align: center;
+        margin: 0.75rem 0;
+        color: #5b5b5b;
+        font-size: 1rem;
+    }
+    .nerf_text,
+    .paragraph-3 {
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #5b5b5b;
+    }
+    body .MathJax,
+    body .MathJax_Display {
+        font-size: 0.9em !important;
+        line-height: 1.4 !important;
+        color: #5b5b5b !important;
+        font-weight: 400 !important;
+        font-family: 'Noto Sans', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+    @media (max-width: 768px) {
+        .jumbotron {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .nerf_title_v2 {
+            font-size: 1.85rem;
+        }
+        s2 {
+            font-size: 1.4rem;
+        }
+        .grey-heading_nerf {
+            font-size: 1.05rem;
+            line-height: 1.2;
+        }
+        .nerf_header_v2 {
+            font-size: 1rem;
+        }
+        .equation-block {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+        #links svg {
+            width: 36px !important;
+            height: 36px !important;
+        }
+    }
 </style>
 
 <!-- <style>
@@ -150,12 +212,14 @@
             </div> -->
 
             <p class="paragraph-3 nerf_text">
-                Different from global shutter cameras(left figure), each scanline/image row of the rolling shutter camera(right figure) is captured at different timestamps. Assuming the readout direction of RS camera is from top to bottom, this process can be mathematically modeled as (assuming infinitesimal exposure time):                
-                <h3 class="nerf_header_v2"><script type="math/tex">{\displaystyle {[\mathbf{I}^r(\mathbf{x})]}_i = {[{\mathbf{I}^g}_i({\mathbf{x}})]}_i}</script></h3>
+                Different from global shutter cameras (left figure), each scanline/image row of the rolling shutter camera (right figure) is captured at different timestamps. Assuming the readout direction of RS camera is from top to bottom, this process can be mathematically modeled as (assuming infinitesimal exposure time):
             </p>
+            <div class="equation-block">
+                <script type="math/tex">{\displaystyle {[\mathbf{I}^r(\mathbf{x})]}_i = {[{\mathbf{I}^g}_i({\mathbf{x}})]}_i}</script>
+            </div>
             <p class="paragraph-3 nerf_text">    
                 where \(\mathbf{I}^r(\mathbf{x})\) is the rolling shutter image, \([\mathbf{I}(\mathbf{x})]_i\) denotes an operator which extracts the \(i^{th}\) row from image \(\mathbf{I}(\mathbf{x})\), \(\mathbf{I}^g_i(\mathbf{x})\) is the global shutter image captured at the same pose as the \(i^{th}\) row of \(\mathbf{I}^r(\mathbf{x})\). We denote the pose of the \(i^{th}\) row of \(\mathbf{I}^r(\mathbf{x})\) as \(\mathbf{T}_{c_i}^w\). Thus, provided the 3D representation by NeRF and the known poses \(\mathbf{T}_{c_i}^w\) for \(i=0,1,...,(H-1)\), where \(H\) is the height of the image, we can easily render the corresponding rolling shutter image \(\mathbf{I}^r(\mathbf{x})\).</br>
-                From the above derivations, we can see that \(\mathbf{I}^r(\mathbf{x})\) is a function of \(\mathbf{\theta}\) (ie. the weight of the MLP network), and \(\mathbf{T}_{c_i}^w\) for \(i=0,1,...,(H-1)\). Furthermore, we can also find that \(\mathbf{I}^r(\mathbf{x})\) is differentiable with respect to \(\mathbf{T}_{c_i}^w\) and \(\mathbf{\theta}\). It thus lays the foundation for our bundle adjustment formulation with a sequence of rolling shutter images. 
+                From the above derivations, we can see that \(\mathbf{I}^r(\mathbf{x})\) is a function of \(\mathbf{\theta}\) (i.e. the weight of the MLP network), and \(\mathbf{T}_{c_i}^w\) for \(i=0,1,...,(H-1)\). Furthermore, we can also find that \(\mathbf{I}^r(\mathbf{x})\) is differentiable with respect to \(\mathbf{T}_{c_i}^w\) and \(\mathbf{\theta}\). It thus lays the foundation for our bundle adjustment formulation with a sequence of rolling shutter images. 
             </p>
     </br>
     <hr>

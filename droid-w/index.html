@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Accurate, robust, and efficient SLAM system under unconstrained, real-world environments">
+  <meta name="keywords" content="Dynamic SLAM, Optimization">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DROID-W: DROID-SLAM in the Wild</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" type="image/svg+xml" href="./static/images/dynamic_slam.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://moyangli00.github.io">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://moyangli00.github.io/usb_nerf/">
+            USB-NeRF
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title title-with-icon" style="margin-bottom:0rem">
+            <img class="title-icon" src="./static/videos/walking_man.gif" alt="DROID-W icon">
+            DROID-W
+          </h1>
+          <h3 class="title is-3 publication-title">DROID-SLAM in the Wild</h3>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://moyangli00.github.io/">Moyang Li</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://zzh2000.github.io/">Zihan Zhu</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://people.inf.ethz.ch/marc.pollefeys/">Marc Pollefeys</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://cvg.ethz.ch/team/Dr-Daniel-Bela-Barath">Dániel Béla Baráth</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>ETH Zürich</span>
+            <span class="author-block affiliation-space"><sup>2</sup>Microsoft</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="./static/docs/droid_w_paper.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href="TBD"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span> -->
+              <!-- Video Link. -->
+              <!-- <span class="link-block">
+                <a href="TBD"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+              <!-- Code Link. -->
+              <!-- <span class="link-block">
+                <a href="TBD"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span> -->
+              <!-- Dataset Link. -->
+              <!-- <span class="link-block">
+                <a href="TBD"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Data</span>
+                  </a> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video>
+      <!-- help me define h6, I want the word to have bg corlor of purple -->
+
+      <h6 style="text-align: center; color:rgb(0, 0, 0)"><strong>TL;DR</strong>: Given a casually captured in-the-wild video, DROID-W estimates accurate camera trajectory, scene structure and uncertainty.</h6>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            We present a robust, real-time RGB SLAM system that handles dynamic environments by leveraging differentiable Uncertainty-aware Bundle Adjustment. 
+            Traditional SLAM methods typically assume static scenes, leading to tracking failures in the presence of motion. 
+            Recent dynamic SLAM approaches attempt to address this challenge using predefined dynamic priors or uncertainty-aware mapping, but they remain limited when confronted with unknown dynamic objects or highly cluttered scenes where geometric mapping becomes unreliable. 
+            In contrast, our method estimates per-pixel uncertainty by exploiting multi-view visual feature inconsistency, enabling robust tracking and reconstruction even in real-world environments. 
+            The proposed system achieves state-of-the-art camera poses and scene geometry in cluttered dynamic scenarios while running in real time at around 8 FPS. 
+            <!-- The source code will be publicly released. -->
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="TBD"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<section class="section method-section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths has-text-centered">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            Our proposed <strong>DROID-W</strong> takes a sequence of RGB images as inputs and simultaneously estimates camera poses while recovering scene geometry. It alternately performs pose-depth refinement and uncertainty optimization in an iterative manner. The proposed uncertainty-aware dense bundle adjustment weights reprojection residuals with per-pixel uncertainty \(u\) to mitigate the influence of dynamic distractors. In addition, we use predicted monocular depth \(D\) as regularization of bundle adjustment, to improve its robustness under highly dynamic environments. For the uncertainty optimization module, we first extract DINOV2 features from the input images and then iteratively update the dynamic uncertainty map by leveraging multi-view feature consistency. Specifically, feature consistency is measured by the cosine similarity between features of image \(I_i\) and its corresponding features in image \(I_j\), where the rigid-motion correspondences \(p_{ij}\) are derived using the current pose and depth estimates.
+          </p>
+        </div>
+        <img src="./static/images/pipeline.png" alt="Overview of the DROID-W pipeline" style="width:100%; max-width:900px; margin-top:1rem;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section dataset-section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered"><i>DROID-W</i> Dataset</h2>
+        <div class="content has-text-justified">
+          <p>
+            To rigorously evaluate our approach in truly <i>in-the-wild</i> settings, 
+            we introduced a dataset that contains 7 casually captured outdoor sequences.
+            DROID-W dataset features various dynamic objects and cluttered environments, 
+            making it a challenging real-world benchmark for dynamic SLAM methods.
+          </p>
+        </div>
+        <video id="dataset-video" autoplay controls muted loop playsinline style="width:100%;max-width:960px;">
+          <source src="./static/videos/datasets.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="has-text-centered results-section-header">
+      <h2 class="title is-3 has-text-centered">Results</h2>
+    </div>
+
+    <div class="columns is-centered">
+
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h3 class="title is-4">Uncertainty Estimation</h3>
+          <p>
+            <i>DROID-W</i> estimates accurate frame-wise uncertainty maps by leveraging multi-view feature consistency.
+          </p>
+          <video id="uncertainty" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/uncertainty_estimation.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <!--/ Visual Effects. -->
+      <!-- Visual Effects. -->
+      <div class="column">
+        <div class="content">
+          <h3 class="title is-4">Point Clouds Reconstruction</h3>
+          <p>
+            <i>DROID-W<i> reconstructs high-quality point clouds under challenging real-world environments.
+          </p>
+          <video id="uncertainty" autoplay controls muted loop playsinline height="100%">
+            <source src="./static/videos/point_clouds.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+      <!--/ Visual Effects. -->
+    </div>
+    <!--/ Matting. -->
+  </div>
+</section>
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{lidroidw2025,
+  author    = {Li, Moyang and Zhu, Zihan and Pollefeys, Marc and Barath, Daniel},
+  title     = {DROID-SLAM in the Wild},
+  journal   = {arXiv preprint},
+  year      = {2025},
+}</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/docs/droid_w_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <!-- <a class="icon-link" href="https://github.com/MoyangLi00" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a> -->
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+            This webpage template is from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. 
+            We sincerely thank <a href="https://keunhong.com/">Keunhong Park</a> for developing and open-sourcing this template. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
