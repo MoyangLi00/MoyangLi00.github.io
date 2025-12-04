@@ -176,7 +176,6 @@
   </div>
 </section>
 
-
 <section class="section">
   <div class="container is-max-desktop">
     <!-- Abstract. -->
@@ -285,9 +284,79 @@
       </div>
       <!--/ Visual Effects. -->
     </div>
-    <!--/ Matting. -->
+    <!--/ Point Clouds. -->
   </div>
 </section>
+
+
+<section class="section has-carousel" id="carousel" style="padding: 0; margin: auto; ">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+</div>
+</div>
+</div>
+<div id="carousel-results" class="carousel results-carousel">
+    <div class="item item-vid5">
+      <!-- mochi-high-five.MOV -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/mochi-high-five.MOV" type="video/mp4">
+      </video>
+    </div>
+    <div class="item item-vid5">
+      <!--  backpack.MOV -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/backpack.MOV" type="video/mp4">
+      </video>
+    </div>
+    <div class="item item-vid5">
+      <!-- spin.MOV -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/spin.MOV" type="video/mp4">
+      </video>
+    </div>
+    <div class="item item-vid5">
+      <!-- sriracha-tree.MOV -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/sriracha-tree.MOV" type="video/mp4">
+      </video>
+    </div>
+    <div class="item item-vid5">
+      <!-- apple.MOV -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/apple.MOV" type="video/mp4">
+      </video>
+    </div>
+    <div class="item item-vid5">
+      <!-- handwavy.MOV -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/handwavy.MOV" type="video/mp4">
+      </video>
+    </div>
+    <div class="item item-vid5">
+      <!-- paper-windmill.mov -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/paper-windmill.mov" type="video/mp4">
+      </video>
+    </div>
+    <div class="item item-vid5">
+      <!-- teddy.mov -->
+      <video poster="" id="" autoplay playsinline muted loop>
+        <source src="static/videos/dycheck/teddy.mov" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const carouselVideos = document.querySelectorAll('#carousel-results video');
+    carouselVideos.forEach((video) => {
+      video.playbackRate = 0.5;
+    });
+  });
+</script>
+
 
 
 <!-- <section class="section" id="BibTeX">

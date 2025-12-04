@@ -164,10 +164,18 @@ h6 {
   border-radius: 10px;
   padding: 0;
   font-size: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .results-carousel video {
   margin: 0;
+  height: 300px;
+  width: auto !important;
+  max-width: none;
+  display: inline-block;
+  object-fit: contain;
 }
 
 
