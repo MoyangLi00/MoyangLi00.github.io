@@ -39,6 +39,7 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script src="./static/js/video-compare.js"></script>
   <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
@@ -239,7 +240,7 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3 has-text-centered"><i>DROID-W</i> Dataset</h2>
+        <h2 class="title is-3 has-text-centered">DROID-W Dataset</h2>
         <div class="content has-text-justified">
           <p>
             To rigorously evaluate our approach in truly <i>in-the-wild</i> settings, 
@@ -261,6 +262,12 @@
     <div class="has-text-centered results-section-header">
       <h2 class="title is-3 has-text-centered">Results</h2>
     </div>
+
+    <video id="reconstruction-video" autoplay controls muted loop playsinline style="width:100%;max-width:1080px;">
+      <source src="./static/videos/youtube.mp4" type="video/mp4">
+    </video>
+
+    <div style="height: 5rem;"></div>
 
     <div class="columns is-centered">
 
@@ -293,10 +300,163 @@
       </div>
       <!--/ Visual Effects. -->
     </div>
+
+    <!-- GS rendering compare: single place, tabs swap the active scene -->
+    <div class="columns is-centered" style="margin-top: 2rem;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4 has-text-centered">Gaussian Splatting Mapping</h3>
+        <p class="has-text-centered" style="margin-bottom: 1rem; font-style: italic;">
+          Drag the slider to compare input frames with rendered views (synchronized playback).
+        </p>
+
+        <div class="video-compare-tabs" role="tablist" aria-label="Rendering scenes">
+          <button type="button" class="scene-tab is-active" data-scene="bonn_balloon" role="tab" aria-selected="true">Ball</button>
+          <button type="button" class="scene-tab" data-scene="bonn_crowd" role="tab" aria-selected="false">Crowd</button>
+          <button type="button" class="scene-tab" data-scene="person_tracking" role="tab" aria-selected="false">Person Tracking</button>
+          <!-- <button type="button" class="scene-tab" data-scene="Tomyum1" role="tab" aria-selected="false">Tom Yum 1</button> -->
+          <button type="button" class="scene-tab" data-scene="Tomyum2" role="tab" aria-selected="false">Tom Yum</button>
+          <!-- <button type="button" class="scene-tab" data-scene="tokyowalking1" role="tab" aria-selected="false">Tokyo Walking</button> -->
+          <button type="button" class="scene-tab" data-scene="tokyowalking2" role="tab" aria-selected="false">Tokyo Walking</button>
+          <!-- <button type="button" class="scene-tab" data-scene="Taylor22" role="tab" aria-selected="false">Taylor 22</button> -->
+          <!-- <button type="button" class="scene-tab" data-scene="StMoritz01" role="tab" aria-selected="false">St. Moritz 01</button> -->
+          <!-- <button type="button" class="scene-tab" data-scene="StMoritz02" role="tab" aria-selected="false">St. Moritz 02</button> -->
+          <!-- <button type="button" class="scene-tab" data-scene="StMoritz03" role="tab" aria-selected="false">St. Moritz 03</button> -->
+          <!-- <button type="button" class="scene-tab" data-scene="StMoritz04" role="tab" aria-selected="false">St. Moritz 04</button> -->
+          <!-- <button type="button" class="scene-tab" data-scene="StMoritz05" role="tab" aria-selected="false">St. Moritz 05</button> -->
+          <!-- <button type="button" class="scene-tab" data-scene="StMoritz06" role="tab" aria-selected="false">St. Moritz 06</button> -->
+          <!-- <button type="button" class="scene-tab" data-scene="walking_halfsphere" role="tab" aria-selected="false">walking_halfsphere</button>
+          <button type="button" class="scene-tab" data-scene="walking_rpy" role="tab" aria-selected="false">walking_rpy</button> -->
+          <button type="button" class="scene-tab" data-scene="walking_static" role="tab" aria-selected="false">walking_static</button>
+          <button type="button" class="scene-tab" data-scene="walking_xyz" role="tab" aria-selected="false">walking_xyz</button>
+        </div>
+
+        <div class="video-compare-mode-tabs" role="tablist" aria-label="Rendered type">
+          <button type="button" class="mode-tab is-active" data-rendered-file="rendered_images.mp4" data-right-label="Rendered RGB" role="tab" aria-selected="true">Images</button>
+          <button type="button" class="mode-tab" data-rendered-file="rendered_disps.mp4" data-right-label="Rendered Depth" role="tab" aria-selected="false">Depth</button>
+        </div>
+
+        <div class="video-compare-wrap">
+          <div class="video-compare"
+               id="droidw-render-compare"
+               data-scene="bonn_balloon"
+               data-rendered-file="rendered_images.mp4"
+               role="region"
+               aria-label="Input versus rendered video comparison">
+            <video class="video-compare__rendered" data-role="rendered" playsinline controls muted loop preload="metadata"></video>
+            <video class="video-compare__input" data-role="input" playsinline muted loop preload="metadata"></video>
+            <p class="video-compare__error" hidden aria-live="polite"></p>
+            <span class="video-compare__label video-compare__label--left">Input frames</span>
+            <span class="video-compare__label video-compare__label--right">Rendered</span>
+            <div class="video-compare__divider" aria-hidden="true"></div>
+            <button type="button" class="video-compare__handle" aria-label="Drag to compare input and rendered video" title="Drag to compare">
+              <span class="icon"><i class="fas fa-arrows-alt-h" aria-hidden="true"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var tabs = document.querySelectorAll('.scene-tab');
+        var modeTabs = document.querySelectorAll('.mode-tab');
+        var compareRoot = document.getElementById('droidw-render-compare');
+        if (!compareRoot) return;
+        var rightLabel = compareRoot.querySelector('.video-compare__label--right');
+
+        function waitForCompareInit(cb) {
+          if (window.__droidwVideoCompareInitialized) {
+            cb();
+            return;
+          }
+          setTimeout(function () { waitForCompareInit(cb); }, 50);
+        }
+
+        function getActiveModeTab() {
+          var active = null;
+          modeTabs.forEach(function (t) {
+            if (t.classList.contains('is-active')) active = t;
+          });
+          return active || modeTabs[0];
+        }
+
+        function applyActiveMode() {
+          var mt = getActiveModeTab();
+          if (!mt) return;
+          var renderedFile = mt.getAttribute('data-rendered-file');
+          var rightText = mt.getAttribute('data-right-label') || 'Rendered';
+          if (renderedFile) compareRoot.setAttribute('data-rendered-file', renderedFile);
+          if (rightLabel) rightLabel.textContent = rightText;
+        }
+
+        function switchScene(scene) {
+          applyActiveMode();
+          tabs.forEach(function (t) {
+            var active = t.getAttribute('data-scene') === scene;
+            t.classList.toggle('is-active', active);
+            t.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+
+          if (typeof window.__droidwVideoCompareSetScene === 'function') {
+            window.__droidwVideoCompareSetScene(compareRoot, scene);
+          }
+
+          var rendered = compareRoot.querySelector('[data-role="rendered"]');
+          if (!rendered) return;
+          try { rendered.pause(); } catch (e) {}
+
+          var tryPlay = function () {
+            try { rendered.currentTime = 0; } catch (e) {}
+            rendered.play().catch(function () {});
+          };
+
+          if (rendered.readyState >= 1) {
+            tryPlay();
+          } else {
+            rendered.addEventListener('loadedmetadata', tryPlay, { once: true });
+          }
+        }
+
+        var initial = document.querySelector('.scene-tab.is-active');
+        waitForCompareInit(function () {
+          if (initial) switchScene(initial.getAttribute('data-scene'));
+        });
+
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            var scene = tab.getAttribute('data-scene');
+            waitForCompareInit(function () { switchScene(scene); });
+          });
+          tab.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              tab.click();
+            }
+          });
+        });
+
+        modeTabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            modeTabs.forEach(function (t) {
+              var active = t === tab;
+              t.classList.toggle('is-active', active);
+              t.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            var scene = compareRoot.getAttribute('data-scene');
+            waitForCompareInit(function () { switchScene(scene); });
+          });
+          tab.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              tab.click();
+            }
+          });
+        });
+      });
+    </script>
     <!--/ Point Clouds. -->
   </div>
 </section>
-
 
 <section class="section has-carousel" id="carousel" style="padding: 0; margin: auto; ">
   <div class="container is-max-desktop">

@@ -207,6 +207,188 @@ h6 {
   border-radius: 5px;
 }
 
+/* Side-by-side video comparison (draggable split)
+ * Use object-fit: contain (not cover) so both layers share the same scale and
+ * letterboxing; cover crops independently and makes the two streams look shifted
+ * when resolutions differ slightly. Split line + clip-path both use % of this box.
+ */
+.video-compare {
+  position: relative;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  aspect-ratio: 16 / 9;
+  --split: 50%;
+  user-select: none;
+  touch-action: none;
+  transform: translateZ(0);
+}
+
+.video-compare video {
+  display: block;
+}
+
+.video-compare__rendered {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  z-index: 0;
+}
+
+.video-compare__input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  z-index: 1;
+  pointer-events: none;
+  /* polygon is more reliable on <video> than inset()+calc() across WebKit builds */
+  clip-path: polygon(0 0, var(--split) 0, var(--split) 100%, 0 100%);
+  -webkit-clip-path: polygon(0 0, var(--split) 0, var(--split) 100%, 0 100%);
+}
+
+.video-compare__error {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  max-width: 90%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  background: rgba(180, 40, 40, 0.92);
+  color: #fff;
+  font-size: 0.85rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.video-compare__divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split);
+  width: 3px;
+  margin-left: -1.5px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.video-compare__handle {
+  position: absolute;
+  top: 50%;
+  left: var(--split);
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  background: rgba(40, 40, 40, 0.92);
+  color: #fff;
+  z-index: 3;
+  cursor: ew-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  padding: 0;
+}
+
+.video-compare__handle:hover {
+  background: rgba(60, 60, 60, 0.95);
+}
+
+.video-compare__handle:focus {
+  outline: 2px solid hsl(204, 86%, 53%);
+  outline-offset: 2px;
+}
+
+.video-compare__handle .icon {
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.video-compare__label {
+  position: absolute;
+  top: 12px;
+  z-index: 4;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.2;
+  pointer-events: none;
+  font-family: 'Google Sans', 'Noto Sans', sans-serif;
+}
+
+.video-compare__label--left {
+  left: 12px;
+}
+
+.video-compare__label--right {
+  right: 12px;
+}
+
+/* Rendering scene tabs + panels */
+.video-compare-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 auto 1rem;
+}
+
+.video-compare-mode-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 auto 1rem;
+}
+
+.scene-tab, .mode-tab {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #111;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.4rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.scene-tab:hover {
+  background: #f5f5f5;
+}
+
+.scene-tab.is-active, .mode-tab.is-active {
+  background: #363636;
+  border-color: #363636;
+  color: #fff;
+}
+
+.video-compare-panels .video-compare-panel {
+  display: none;
+}
+
+.video-compare-panels .video-compare-panel.is-active {
+  display: block;
+}
+
 @media (max-width: 768px) {
   .teaser video {
     width: 100%;

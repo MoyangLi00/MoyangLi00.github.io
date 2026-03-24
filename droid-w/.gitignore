@@ -1,4 +1,13 @@
 .DS_Store
 .idea
 static/videos_high/
+static/videos/gs_rendering/moving_box/
+static/videos/gs_rendering/StMoritz*/
+static/videos/gs_rendering/tokyowalking1/
+static/videos/gs_rendering/Taylor22/
+static/videos/gs_rendering/Tomyum1/
+static/videos/gs_rendering/walking_halfsphere/
+static/videos/gs_rendering/walking_rpy/
+static/videos/gs_rendering/*/overlay_high_res_uncertainty.mp4
+
 
