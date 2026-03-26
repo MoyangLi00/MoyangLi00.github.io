@@ -304,20 +304,10 @@
     <!-- GS rendering compare: single place, tabs swap the active scene -->
     <div class="columns is-centered" style="margin-top: 2rem;">
       <div class="column is-four-fifths">
-        <h3 class="title is-4 has-text-centered">Gaussian Splatting Mapping</h3>
+        <h3 class="title is-4 has-text-centered" style="font-style: normal;">Gaussian Splatting Mapping</h3>
         <p class="has-text-centered" style="margin-bottom: 1rem; font-style: italic;">
           Drag the slider to compare input frames with rendered views.
         </p>
-
-        <div class="video-compare-tabs" role="tablist" aria-label="Rendering scenes">
-          <button type="button" class="scene-tab is-active" data-scene="bonn_balloon" role="tab" aria-selected="true">Ball</button>
-          <button type="button" class="scene-tab" data-scene="bonn_crowd" role="tab" aria-selected="false">Crowd</button>
-          <button type="button" class="scene-tab" data-scene="person_tracking" role="tab" aria-selected="false">Person Tracking</button>
-          <button type="button" class="scene-tab" data-scene="Tomyum2" role="tab" aria-selected="false">Tom Yum</button>
-          <button type="button" class="scene-tab" data-scene="tokyowalking2" role="tab" aria-selected="false">Tokyo Walking</button>
-          <button type="button" class="scene-tab" data-scene="walking_static" role="tab" aria-selected="false">walking_static</button>
-          <button type="button" class="scene-tab" data-scene="walking_xyz" role="tab" aria-selected="false">walking_xyz</button>
-        </div>
 
         <div class="video-compare-mode-tabs" role="tablist" aria-label="Rendered type">
           <button type="button" class="mode-tab is-active" data-rendered-file="rendered_images.mp4" data-right-label="Rendered RGB" role="tab" aria-selected="true">Images</button>
@@ -325,14 +315,23 @@
         </div>
 
         <div class="video-compare-wrap">
+          <div class="video-compare-tabs video-compare-tabs--top" role="tablist" aria-label="Rendering scenes">
+            <button type="button" class="scene-tab is-active" data-scene="bonn_balloon" role="tab" aria-selected="true">Ball</button>
+            <button type="button" class="scene-tab" data-scene="bonn_crowd" role="tab" aria-selected="false">Crowd</button>
+            <button type="button" class="scene-tab" data-scene="person_tracking" role="tab" aria-selected="false">Person Tracking</button>
+            <button type="button" class="scene-tab" data-scene="Tomyum2" role="tab" aria-selected="false">Tom Yum</button>
+            <button type="button" class="scene-tab" data-scene="tokyowalking2" role="tab" aria-selected="false">Tokyo Walking</button>
+            <button type="button" class="scene-tab" data-scene="walking_static" role="tab" aria-selected="false">walking_static</button>
+            <button type="button" class="scene-tab" data-scene="walking_xyz" role="tab" aria-selected="false">walking_xyz</button>
+          </div>
           <div class="video-compare"
                id="droidw-render-compare"
                data-scene="bonn_balloon"
                data-rendered-file="rendered_images.mp4"
                role="region"
                aria-label="Input versus rendered video comparison">
-            <video class="video-compare__rendered" data-role="rendered" playsinline controls muted loop preload="metadata"></video>
-            <video class="video-compare__input" data-role="input" playsinline muted loop preload="metadata"></video>
+            <video class="video-compare__rendered" data-role="rendered" playsinline controls muted loop preload="auto"></video>
+            <video class="video-compare__input" data-role="input" playsinline controls muted loop preload="auto"></video>
             <p class="video-compare__error" hidden aria-live="polite"></p>
             <span class="video-compare__label video-compare__label--left">Input frames</span>
             <span class="video-compare__label video-compare__label--right">Rendered</span>
@@ -391,18 +390,32 @@
           }
 
           var rendered = compareRoot.querySelector('[data-role="rendered"]');
-          if (!rendered) return;
+          var input = compareRoot.querySelector('[data-role="input"]');
+          if (!rendered || !input) return;
           try { rendered.pause(); } catch (e) {}
+          try { input.pause(); } catch (e) {}
 
           var tryPlay = function () {
-            try { rendered.currentTime = 0; } catch (e) {}
+            if (rendered.readyState < 1 || input.readyState < 1) return;
+            try {
+              rendered.currentTime = 0;
+              input.currentTime = 0;
+            } catch (e) {}
             rendered.play().catch(function () {});
           };
 
-          if (rendered.readyState >= 1) {
+          if (rendered.readyState >= 1 && input.readyState >= 1) {
             tryPlay();
           } else {
-            rendered.addEventListener('loadedmetadata', tryPlay, { once: true });
+            var onMeta = function () {
+              if (rendered.readyState >= 1 && input.readyState >= 1) {
+                rendered.removeEventListener('loadedmetadata', onMeta);
+                input.removeEventListener('loadedmetadata', onMeta);
+                tryPlay();
+              }
+            };
+            rendered.addEventListener('loadedmetadata', onMeta);
+            input.addEventListener('loadedmetadata', onMeta);
           }
         }
 

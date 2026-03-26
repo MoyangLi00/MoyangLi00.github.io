@@ -146,8 +146,10 @@
      * Throttle sync updates to reduce re-decode churn.
      */
     var syncRafId = null;
-    var SYNC_EPS = 0.05; // allow a bit drift to avoid frequent seeks
-    var SYNC_THROTTLE_MS = 150;
+    // Larger throttle + eps reduces how often we force `input.currentTime`,
+    // which can trigger re-decode and visible stutter in some encoded MP4s.
+    var SYNC_EPS = 0.08; // allow more drift without frequent seeks
+    var SYNC_THROTTLE_MS = 300;
     var lastSyncMs = 0;
 
     function clampTimeToBoth(t) {
@@ -165,6 +167,10 @@
       if (now - lastSyncMs < SYNC_THROTTLE_MS) return;
       lastSyncMs = now;
       if (rendered.seeking) return;
+      // If input hasn't buffered enough yet, forcing currentTime can stall.
+      // HAVE_CURRENT_DATA = 2
+      if (input.readyState < 2) return;
+      if (input.seeking) return;
       var t = clampTimeToBoth(rendered.currentTime);
       if (!isFinite(t) || t < 0) return;
       if (Math.abs(input.currentTime - t) > SYNC_EPS) {
@@ -193,11 +199,48 @@
       }
     }
 
+    // When the user seeks (progress bar), avoid forcing `input.currentTime`
+    // mid-flight. Instead, pause during `seeking`, then set + wait for `input`
+    // to finish seeking on `seeked` before resuming sync/play.
+    var seekToken = 0;
+    var inputSeekedHandler = null;
+
+    function syncAfterInputSeek(token) {
+      if (token !== seekToken) return; // superseded by a newer seek
+      syncInputToRendered();
+      if (!rendered.paused && !rendered.ended) {
+        input.playbackRate = rendered.playbackRate;
+        input.play().catch(function () {});
+        startSyncLoop();
+      } else {
+        try { input.pause(); } catch (e) {}
+        stopSyncLoop();
+      }
+    }
+
+    function queueInputSeekedOnce(token) {
+      if (inputSeekedHandler) {
+        try { input.removeEventListener('seeked', inputSeekedHandler); } catch (e) {}
+      }
+      inputSeekedHandler = function () {
+        syncAfterInputSeek(token);
+      };
+      input.addEventListener('seeked', inputSeekedHandler, { once: true });
+    }
+
     rendered.addEventListener('seeking', function () {
-      input.currentTime = clampTimeToBoth(rendered.currentTime);
+      stopSyncLoop();
+      try { input.pause(); } catch (e) {}
     });
     rendered.addEventListener('seeked', function () {
-      input.currentTime = clampTimeToBoth(rendered.currentTime);
+      var t = clampTimeToBoth(rendered.currentTime);
+      if (!isFinite(t) || t < 0) return;
+      seekToken++;
+      var token = seekToken;
+      queueInputSeekedOnce(token);
+      try {
+        input.currentTime = t;
+      } catch (e) {}
     });
     rendered.addEventListener('play', function () {
       input.playbackRate = rendered.playbackRate;
@@ -224,7 +267,9 @@
     });
 
     function onBothReady() {
-      if (rendered.readyState >= 1 && input.readyState >= 1) {
+      // Wait a bit more than metadata before first sync/playback coupling.
+      // HAVE_CURRENT_DATA = 2
+      if (rendered.readyState >= 2 && input.readyState >= 2) {
         input.playbackRate = rendered.playbackRate;
         syncInputToRendered();
       }

@@ -333,7 +333,7 @@ h6 {
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.2;
   pointer-events: none;
@@ -357,6 +357,32 @@ h6 {
   margin: 0 auto 1rem;
 }
 
+.video-compare-wrap {
+  /* default: no special sizing */
+  max-width: none;
+  margin: 0;
+}
+
+.video-compare-tabs--top {
+  /* Normal placement (no outer frame). */
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 auto 1rem;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.video-compare-tabs--top .scene-tab {
+  /* Prevent any accidental overrides from overlay mode. */
+  white-space: nowrap;
+}
+
 .video-compare-mode-tabs {
   display: flex;
   justify-content: center;
@@ -366,25 +392,78 @@ h6 {
 }
 
 .scene-tab, .mode-tab {
-  border: 1px solid #ddd;
-  background: #fff;
+  position: relative;
+  /* Keep it flat (no 3D) */
+  transform-style: flat;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  /* Continuous pastel gradient series via hue-only control */
+  background: linear-gradient(
+    135deg,
+    hsla(var(--tab-h, 200), 55%, 96%, 1),
+    hsla(calc(var(--tab-h, 200) + 25), 45%, 90%, 1)
+  );
   color: #111;
   font-weight: 700;
   border-radius: 8px;
   padding: 0.4rem 0.75rem;
   cursor: pointer;
   font-size: 0.95rem;
+  transition: filter 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  /* Baseline "3D button" */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.10),
+    0 7px 16px rgba(0, 0, 0, 0.12);
 }
 
-.scene-tab:hover {
-  background: #f5f5f5;
+.scene-tab::before, .mode-tab::before {
+  content: none;
+}
+
+.scene-tab::after, .mode-tab::after {
+  content: none;
+}
+
+.scene-tab:hover, .mode-tab:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
 }
 
 .scene-tab.is-active, .mode-tab.is-active {
-  background: #363636;
-  border-color: #363636;
-  color: #fff;
+  border-color: rgba(0, 0, 0, 0.32);
+  /* More contrast + deeper selected state */
+  filter: brightness(0.86) saturate(1.7);
+  /* "Pressed" 3D look */
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -4px 16px rgba(0, 0, 0, 0.32),
+    0 12px 28px rgba(0, 0, 0, 0.26);
 }
+
+/* Instant press feedback when clicking */
+.scene-tab:active, .mode-tab:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -6px 18px rgba(0, 0, 0, 0.36),
+    0 8px 18px rgba(0, 0, 0, 0.26);
+  /* Pressed feedback: desaturate to gray */
+  filter: grayscale(1) brightness(0.85) saturate(0) !important;
+}
+
+/* Scene tabs: left-to-right gradient series */
+.video-compare-tabs--top .scene-tab:nth-child(1) { --tab-h: 10; }
+.video-compare-tabs--top .scene-tab:nth-child(2) { --tab-h: 60; }
+.video-compare-tabs--top .scene-tab:nth-child(3) { --tab-h: 110; }
+.video-compare-tabs--top .scene-tab:nth-child(4) { --tab-h: 160; }
+.video-compare-tabs--top .scene-tab:nth-child(5) { --tab-h: 210; }
+.video-compare-tabs--top .scene-tab:nth-child(6) { --tab-h: 260; }
+.video-compare-tabs--top .scene-tab:nth-child(7) { --tab-h: 310; }
+
+/* Mode tabs (Images/Depth): two-color gradient */
+.video-compare-mode-tabs .mode-tab:nth-child(1) { --tab-h: 200; }
+.video-compare-mode-tabs .mode-tab:nth-child(2) { --tab-h: 20; }
 
 .video-compare-panels .video-compare-panel {
   display: none;
