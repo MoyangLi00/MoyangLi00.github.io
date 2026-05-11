@@ -6,206 +6,485 @@
     <!-- Meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Moyang Li">
+    <meta name="description" content="Moyang Li (李墨洋) — MSc student at ETH Zurich. Research in 3D computer vision and robotics: 3D reconstruction and SLAM.">
+    <meta name="keywords" content="Moyang Li, ETH Zurich, CVG, 3D vision, SLAM, 3D reconstruction, computer vision, robotics, NeRF, Gaussian Splatting">
+
+    <!-- Open Graph (Facebook / LinkedIn / Slack link previews) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Moyang Li">
+    <meta property="og:title" content="Moyang Li (李墨洋)">
+    <meta property="og:description" content="MSc student at ETH Zurich. Research in 3D computer vision and robotics — 3D reconstruction and SLAM.">
+    <meta property="og:url" content="https://moyangli00.github.io/">
+    <meta property="og:image" content="https://moyangli00.github.io/imgs/portrait.jpg">
+    <meta property="og:image:alt" content="Portrait of Moyang Li">
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Moyang Li (李墨洋)">
+    <meta name="twitter:description" content="MSc student at ETH Zurich. Research in 3D computer vision and robotics — 3D reconstruction and SLAM.">
+    <meta name="twitter:image" content="https://moyangli00.github.io/imgs/portrait.jpg">
+    <meta name="twitter:image:alt" content="Portrait of Moyang Li">
+
+    <link rel="canonical" href="https://moyangli00.github.io/">
+
+    <!-- Apply theme before paint to avoid FOUC. Default is always light;
+         visitors who have explicitly toggled get their saved choice. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          document.documentElement.setAttribute('data-theme', stored || 'light');
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
 
     <!-- Bootstrap CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-    
+
     <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Academic Icons for Google Scholar -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
 
+    <!-- Google Fonts: Inter for body, Crimson Pro for academic-style headings -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
     <!-- Custom Styles -->
     <style>
-          body {
-            font-family: 'sans-serif';
-            font-size: 16px;
-            background-color: #FFFFFF;
-            color: #4F6071;
+          :root,
+          [data-theme="light"] {
+            --color-bg: #fbfaf7;
+            --color-surface: #ffffff;
+            --color-text: #2c3a47;
+            --color-text-soft: #5b6b7a;
+            --color-muted: #8a98a6;
+            --color-border: #e7e2d8;
+            --color-accent: #c86b3c;
+            --color-accent-soft: rgba(200, 107, 60, 0.10);
+            /* Quieter header: flat tone, no radial glows */
+            --header-gradient: linear-gradient(180deg, #f6f1e8 0%, #fbfaf7 100%);
+            /* Subtler card depth — closer to a list than a card */
+            --shadow-card: 0 1px 2px rgba(20, 30, 40, 0.03);
+            --shadow-card-hover: 0 1px 2px rgba(20, 30, 40, 0.04), 0 6px 16px rgba(20, 30, 40, 0.05);
+            --shadow-portrait: 0 2px 8px rgba(20, 30, 40, 0.06), 0 8px 20px rgba(20, 30, 40, 0.06);
+            --shadow-portrait-hover: 0 3px 10px rgba(20, 30, 40, 0.08), 0 12px 28px rgba(20, 30, 40, 0.08);
           }
+
+          [data-theme="dark"] {
+            --color-bg: #15171c;
+            --color-surface: #1d2027;
+            --color-text: #e7eaef;
+            --color-text-soft: #a8b1bc;
+            --color-muted: #6e7682;
+            --color-border: #2a2e37;
+            --color-accent: #e08458;
+            --color-accent-soft: rgba(224, 132, 88, 0.16);
+            --header-gradient: linear-gradient(180deg, #1c1f25 0%, #15171c 100%);
+            --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.30);
+            --shadow-card-hover: 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 16px rgba(0, 0, 0, 0.40);
+            --shadow-portrait: 0 2px 8px rgba(0, 0, 0, 0.40), 0 8px 20px rgba(0, 0, 0, 0.40);
+            --shadow-portrait-hover: 0 3px 10px rgba(0, 0, 0, 0.50), 0 12px 28px rgba(0, 0, 0, 0.50);
+          }
+
+          /* Smooth theme transition on color/background changes */
+          body,
+          #header,
+          .pub-card,
+          .vspace-top-news,
+          #footer,
+          #theme-toggle {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+          }
+
+          /* Floating dark/light mode toggle */
+          #theme-toggle {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 1000;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text-soft);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            box-shadow: 0 2px 8px rgba(20, 30, 40, 0.10);
+            outline: none;
+          }
+          #theme-toggle:hover {
+            color: var(--color-accent);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(20, 30, 40, 0.14);
+          }
+          #theme-toggle .icon-sun { display: none; }
+          [data-theme="dark"] #theme-toggle .icon-moon { display: none; }
+          [data-theme="dark"] #theme-toggle .icon-sun { display: inline-block; }
+
+          html { scroll-behavior: smooth; }
+
+          body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 16px;
+            line-height: 1.65;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+
+          a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: color 0.2s ease, border-color 0.2s ease;
+            border-bottom: 1px solid transparent;
+          }
+          a:hover,
+          a:focus {
+            color: var(--color-accent);
+            text-decoration: none;
+            border-bottom-color: var(--color-accent);
+          }
+
+          /* Header */
           #header {
-            background-color: #f4f4f4;
-            /*background-color: #FFFFFF;*/
+            background: var(--header-gradient);
             display: flex;
             align-items: center;
-            padding-top:60px;
-            padding-bottom:60px;
+            padding-top: 80px;
+            padding-bottom: 80px;
           }
-          
-          #header .container {
-            max-width: 900px;
-          }
-          #footer {
-            background-color: #FFFFFF;
-            padding:60px;
-          }
+
+          #header .container { max-width: 900px; }
+
           #portrait {
-            border: 3px solid white;
             border-radius: 50%;
             object-fit: cover;
             aspect-ratio: 1 / 1;
             max-width: 180px;
+            display: block;
+            box-shadow: var(--shadow-portrait);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
           }
-          #header-text {
-            margin-top: 20px;
+          #portrait:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-portrait-hover);
           }
+
+          #header-text { margin-top: 20px; }
+
           #header-text-name {
-            font-size: 40px;
+            font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+            font-size: 44px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--color-text);
+            line-height: 1.15;
+          }
+          #header-text-name .name-cn {
+            font-size: 0.78em;
+            font-weight: 500;
+            margin-left: 0.15em;
+            letter-spacing: 0.02em;
           }
           #header-text-email {
             font-size: 20px;
             font-style: italic;
+            color: var(--color-text-soft);
           }
-          .header-text-desc {
-            font-size: 20px;
+          .header-text-desc { font-size: 20px; }
+
+          .vspace-top { margin-top: 48px; }
+          .vspace-top-news { margin-top: 14px; }
+
+          /* Section headings — academic serif feel */
+          h1 {
+            font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+            font-size: 30px;
+            font-weight: 600;
+            color: var(--color-text);
+            letter-spacing: -0.005em;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-border);
+            position: relative;
           }
-          .vspace-top {
-            margin-top: 30px;
+          h1::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 48px;
+            height: 2px;
+            background: var(--color-accent);
+            border-radius: 2px;
           }
+
+          p { color: var(--color-text); }
+
+          /* News */
           .vspace-top-news {
-              margin-top: 15px;
-          }
-          .paper-image {
-            width: 150px;
+            padding: 10px 14px;
+            border-left: 3px solid var(--color-accent);
+            background: var(--color-accent-soft);
+            border-radius: 0 6px 6px 0;
+            color: var(--color-text);
           }
           .news-date {
-              font-weight: bold;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-right: 4px;
           }
+
+          /* Publication / project entries */
+          .paper-image { width: 150px; }
           .paper-title {
-            font-weight: bold;
+            font-family: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-text);
+            line-height: 1.3;
+            margin-bottom: 4px;
+          }
+          .paper-desc {
+            color: var(--color-text-soft);
+            margin-bottom: 6px;
           }
           .paper-authors {
             font-style: italic;
+            color: var(--color-text-soft);
+            margin-bottom: 6px;
           }
-          .highlight-color {
-            color: rgb(226, 131, 83);
+
+          .highlight-color { color: var(--color-accent); }
+
+          /* Click-to-load YouTube placeholder — no iframe loaded until user clicks */
+          .yt-lite {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #000;
           }
-          
-          /* Make h1 (Bio, Publications, Projects) smaller */
-          h1 {
-            font-size: 28px;
+          .yt-lite__thumb {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.2s ease, transform 0.4s ease;
           }
-          
+          .yt-lite__btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 52px;
+            height: 36px;
+            padding: 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(20, 20, 20, 0.72);
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+          }
+          .yt-lite__btn::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 55%;
+            transform: translate(-50%, -50%);
+            border-style: solid;
+            border-width: 7px 0 7px 11px;
+            border-color: transparent transparent transparent #ffffff;
+          }
+          .yt-lite:hover .yt-lite__thumb { filter: brightness(0.92); }
+          .yt-lite:hover .yt-lite__btn,
+          .yt-lite:focus .yt-lite__btn {
+            background: #c00;
+            transform: translate(-50%, -50%) scale(1.05);
+          }
+          .yt-lite iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+          }
+
+          /* Card-like publication rows */
+          .pub-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 22px;
+            margin-top: 22px;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+          }
+          .pub-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card-hover);
+            border-color: #d9d2c4;
+          }
+          .pub-card .col-sm-3 video,
+          .pub-card .col-sm-3 iframe,
+          .pub-card .col-sm-3 > div {
+            border-radius: 8px;
+            overflow: hidden;
+          }
+
+          /* Inline link buttons (Project page / Paper / Code / Dataset) */
+          .pub-links a {
+            display: inline-block;
+            padding: 3px 10px;
+            margin: 4px 6px 4px 0;
+            font-size: 14px;
+            color: var(--color-accent);
+            background: var(--color-accent-soft);
+            border: 1px solid transparent;
+            border-radius: 999px;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+          }
+          .pub-links a:hover {
+            background: var(--color-accent);
+            color: #ffffff;
+            border-bottom-color: transparent;
+          }
+
+          /* Bold name in author list */
+          .paper-authors b { color: var(--color-text); font-style: normal; font-weight: 600; }
+
           /* Icon links styling */
           .icon-links {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
           }
-          
           .icon-links a {
             font-size: 16px;
-            color: #4F6071;
+            color: var(--color-text-soft);
             text-decoration: none;
-            transition: color 0.3s ease;
-            display: flex;
+            border: none;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            transition: color 0.2s ease, transform 0.2s ease;
           }
-          
           .icon-links a i {
             font-size: 18px;
-            width: 20px;
+            width: 22px;
+            color: var(--color-accent);
           }
-          
           .icon-links a:hover {
-            color: rgb(226, 131, 83);
+            color: var(--color-accent);
+            transform: translateX(2px);
+            border-bottom-color: transparent;
+          }
+
+          /* Footer */
+          #footer {
+            background-color: transparent;
+            padding: 0;
+            color: var(--color-muted);
+            font-size: 13px;
+            text-align: center;
+            margin-top: 60px;
+          }
+          .footer-inner {
+            border-top: 1px solid var(--color-border);
+            padding-top: 60px;
+            padding-bottom: 60px;
+          }
+
+          /* Visitor map (ClustrMaps static image) */
+          .visitor-map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+          }
+          .visitor-map-label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-text-soft);
+          }
+          .visitor-map-widget {
+            display: inline-block;
+            line-height: 0;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+          }
+          .visitor-map-widget:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+          }
+          /* Override global <a> border-bottom on the widget link */
+          a.visitor-map-widget,
+          a.visitor-map-widget:hover {
+            border-bottom: none;
+          }
+          .visitor-map-widget img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
           }
 
           /* Responsive styles for mobile */
           @media (max-width: 767px) {
-            #header {
-              padding-top: 30px;
-              padding-bottom: 30px;
+            #header { padding-top: 40px; padding-bottom: 40px; }
+            #header-text { margin-top: 0; margin-left: 0; text-align: left; }
+            #header-text-name { font-size: 26px; }
+            #header-text-email { font-size: 14px; }
+            #portrait { max-width: 110px; margin: 0; display: block; }
+            .row.align-items-center > .col-auto {
+              flex: 0 0 110px !important;
+              max-width: 110px !important;
+              padding-right: 0 !important;
             }
-            
-            #header-text {
-              margin-top: 0;
-              margin-left: 0;
-              text-align: left;
+            .row.align-items-center > .col-auto + .col {
+              padding-left: 28px !important;
             }
-            
-            #header-text-name {
-              font-size: 22px;
-            }
-            
-            #header-text-email {
-              font-size: 14px;
-            }
-            
-            #portrait {
-              max-width: 130px;
-              margin: 0;
-              display: block;
-            }
-            
-            .col-auto {
-              flex: 0 0 130px !important;
-              max-width: 130px !important;
-              padding-right: 50px !important;
-            }
-            
-            .icon-links {
-              gap: 10px;
-            }
-            
-            .text-sm-left {
-              text-align: left !important;
-            }
-            
+            .icon-links { gap: 10px; }
+            .text-sm-left { text-align: left !important; }
             .col-sm-3 {
-              margin-bottom: 20px;
+              margin-bottom: 16px;
               padding-left: 15px;
               padding-right: 15px;
             }
-            
-            .vspace-top {
-              margin-top: 20px;
-            }
-            
-            #footer {
-              padding: 30px 20px;
-            }
-            
-            h1 {
-              font-size: 22px;
-            }
-            
-            p {
-              font-size: 14px;
-            }
-            
-            .paper-authors {
-              font-size: 13px;
-            }
-            
-            /* Ensure all text in col is consistent */
-            .col {
-              font-size: 14px;
-            }
-            
-            .paper-title {
-              font-size: 15px !important;
-            }
-            
-            .icon-links a {
-              font-size: 14px;
-            }
-            
-            .icon-links a i {
-              font-size: 16px;
-              width: 16px;
-            }
-            
-            .offset-sm-1 {
-              margin-left: 0 !important;
-            }
+            .vspace-top { margin-top: 32px; }
+            #footer { padding: 30px 20px; }
+            h1 { font-size: 24px; }
+            p { font-size: 14px; }
+            .paper-authors { font-size: 13px; }
+            .col { font-size: 14px; }
+            .paper-title { font-size: 17px !important; }
+            .icon-links a { font-size: 14px; }
+            .icon-links a i { font-size: 16px; width: 18px; }
+            .offset-sm-1 { margin-left: 0 !important; }
+            .pub-card { padding: 16px; }
           }
     </style>
 </head>
 
 <body>
+    <button id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+        <i class="fas fa-moon icon-moon" aria-hidden="true"></i>
+        <i class="fas fa-sun icon-sun" aria-hidden="true"></i>
+    </button>
+
     <div id='header'>
         <div class='container'>
             <div class='row align-items-center'>
@@ -215,12 +494,14 @@
 
                 <div class="col text-sm-left">
                   <div id='header-text-name'>
-                      Moyang Li (李墨洋)
+                      Moyang Li <span class="name-cn">(李墨洋)</span>
                   </div>
                   <div class="icon-links" style="margin-top: 10px;">
                     <a href="mailto:moyali@ethz.ch"><i class="fas fa-envelope"></i> Email</a>
-                    <a href="https://github.com/MoyangLi00"><i class="fab fa-github"></i> Github</a>
+                    <a href="https://github.com/MoyangLi00"><i class="fab fa-github"></i> GitHub</a>
                     <a href="https://scholar.google.com/citations?user=Qvu8bNYAAAAJ&hl=en&authuser=1"><i class="ai ai-google-scholar"></i> Google Scholar</a>
+                    <a href="https://www.linkedin.com/in/moyang-li-3134932a2/?locale=en"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://x.com/moyangli00"><i class="fab fa-x-twitter"></i> X</a>
                     <!-- <a href="docs/Curriculum_Vitae_Moyang.pdf"><i class="fas fa-file-pdf"></i> CV</a> -->
                   </div>
 
@@ -268,11 +549,11 @@
 
                 <p> * denotes equal contribution or advising; &dagger; denotes corresponding author</p>
 
-                <div class='row vspace-top'>
+                <div class='row vspace-top pub-card align-items-center'>
                   <div class="col-sm-3">
-                        <div style="position: relative; width: 100%; padding-bottom: 56.25%; overflow: hidden;">
-                            <iframe style="position: absolute; top: 0; left: 0; width: 300%; height: 300%; transform: scale(0.3333); transform-origin: top left;" src="https://www.youtube-nocookie.com/embed/djl4hZuGdiE?autoplay=1&mute=1&loop=1&playlist=djl4hZuGdiE&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&cc_load_policy=0" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 14px; background: transparent; pointer-events: auto;"></div>
+                        <div class="yt-lite" data-yt-id="djl4hZuGdiE" role="button" tabindex="0" aria-label="Play VIGS-SLAM video">
+                            <img class="yt-lite__thumb" src="https://i.ytimg.com/vi/djl4hZuGdiE/hqdefault.jpg" alt="VIGS-SLAM video thumbnail" loading="lazy">
+                            <button class="yt-lite__btn" type="button" aria-label="Play"></button>
                         </div>
                     </div>
 
@@ -284,22 +565,22 @@
                           <em>arXiv </em> 2025
                         </div>
                         <div class='paper-authors'>
-                            <a href="https://zzh2000.github.io/">Zihan Zhu</a>, 
-                            <a href="https://www.ifp.uni-stuttgart.de/en/institute/team/Zhang-00004/">Wei Zhang</a>, 
-                            <b>Moyang Li</b>, 
-                            <a href="https://www.ifp.uni-stuttgart.de/institut/team/Haala-00001/">Norbert Haala</a>, 
-                            <a href="https://people.inf.ethz.ch/marc.pollefeys/">Marc Pollefeys</a>, 
+                            <a href="https://zzh2000.github.io/">Zihan Zhu</a>,
+                            <a href="https://www.ifp.uni-stuttgart.de/en/institute/team/Zhang-00004/">Wei Zhang</a>,
+                            <b>Moyang Li</b>,
+                            <a href="https://www.ifp.uni-stuttgart.de/institut/team/Haala-00001/">Norbert Haala</a>,
+                            <a href="https://people.inf.ethz.ch/marc.pollefeys/">Marc Pollefeys</a>,
                             <a href="https://cvg.ethz.ch/team/Dr-Daniel-Bela-Barath">Dániel Béla Baráth</a>
                         </div>
-                        <div>
-                            <a href="https://vigs-slam.github.io/">[Project page]</a>
-                            <a href="https://arxiv.org/abs/2512.02293">[Paper]</a>
+                        <div class='pub-links'>
+                            <a href="https://vigs-slam.github.io/">Project page</a>
+                            <a href="https://arxiv.org/abs/2512.02293">Paper</a>
                         </div>
                         Visual inertial Gaussian Splatting SLAM for robust and accurate localization and mapping.
                     </div>
                 </div>
-                
-                <div class='row vspace-top'>
+
+                <div class='row vspace-top pub-card align-items-center'>
                   <div class="col-sm-3">
                         <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
                             <source src="./droid-w/static/videos/teaser.mp4" type="video/mp4">
@@ -313,22 +594,22 @@
                           <em>CVPR </em> 2026
                         </div>
                         <div class='paper-authors'>
-                            <b>Moyang Li</b>, 
-                            <a href="https://zzh2000.github.io/">Zihan Zhu</a>, 
-                            <a href="https://people.inf.ethz.ch/marc.pollefeys/">Marc Pollefeys</a>, 
+                            <b>Moyang Li</b>,
+                            <a href="https://zzh2000.github.io/">Zihan Zhu</a>,
+                            <a href="https://people.inf.ethz.ch/marc.pollefeys/">Marc Pollefeys</a>,
                             <a href="https://cvg.ethz.ch/team/Dr-Daniel-Bela-Barath">Dániel Béla Baráth</a>
                         </div>
-                        <div>
-                            <a href="https://moyangli00.github.io/droid-w/">[Project page]</a>
-                            <a href="https://arxiv.org/pdf/2603.19076">[Paper]</a>
-                            <a href="https://github.com/MoyangLi00/DROID-W.git">[Code]</a>
-                            <a href="https://cvg-data.inf.ethz.ch/DROID-W/">[Dataset]</a>
+                        <div class='pub-links'>
+                            <a href="https://moyangli00.github.io/droid-w/">Project page</a>
+                            <a href="https://arxiv.org/pdf/2603.19076">Paper</a>
+                            <a href="https://github.com/MoyangLi00/DROID-W.git">Code</a>
+                            <a href="https://cvg-data.inf.ethz.ch/DROID-W/">Dataset</a>
                         </div>
                         Accurate, robust, and efficient SLAM system under unconstrained, real-world dynamic environments.
                     </div>
                 </div>
 
-                <div class='row vspace-top'>
+                <div class='row vspace-top pub-card align-items-center'>
                   <div class="col-sm-3">
                         <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
                             <source src="videos/usb_nerf_real_world_datasets.mp4" type="video/mp4">
@@ -342,73 +623,82 @@
                           <em>ICLR</em> 2024
                         </div>
                         <div class='paper-authors'>
-                            <b>Moyang Li*</b>, 
-                            <a href="https://wangpeng000.github.io/">Peng Wang*</a>, 
-                            <a href="https://scholar.google.com/citations?user=mN764NsAAAAJ&hl=en">Lingzhe Zhao</a>, 
-                            <a href="https://scholar.google.com/citations?user=0z2qluIAAAAJ&hl=en">Bangyan Liao</a>, 
+                            <b>Moyang Li*</b>,
+                            <a href="https://wangpeng000.github.io/">Peng Wang*</a>,
+                            <a href="https://scholar.google.com/citations?user=mN764NsAAAAJ&hl=en">Lingzhe Zhao</a>,
+                            <a href="https://scholar.google.com/citations?user=0z2qluIAAAAJ&hl=en">Bangyan Liao</a>,
                             <a href="https://ethliup.github.io/">Peidong Liu&dagger;</a>
                         </div>
-                        <div>
-                            <a href="https://moyangli00.github.io/usb_nerf/">[Project page]</a>
-                            <a href="https://arxiv.org/abs/2310.02687">[Paper]</a>
-                            <a href="https://github.com/WU-CVGL/USB-NeRF">[Code]</a>
-                            <a href="https://westlakeu-my.sharepoint.com/personal/cvgl_westlake_edu_cn/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fcvgl%5Fwestlake%5Fedu%5Fcn%2FDocuments%2FUSB%2DNeRF&ga=1">[Dataset]</a>
+                        <div class='pub-links'>
+                            <a href="https://moyangli00.github.io/usb_nerf/">Project page</a>
+                            <a href="https://arxiv.org/abs/2310.02687">Paper</a>
+                            <a href="https://github.com/WU-CVGL/USB-NeRF">Code</a>
+                            <a href="https://westlakeu-my.sharepoint.com/personal/cvgl_westlake_edu_cn/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fcvgl%5Fwestlake%5Fedu%5Fcn%2FDocuments%2FUSB%2DNeRF&ga=1">Dataset</a>
                         </div>
                         USB-NeRF can remove rolling shutter effect, realize high-quality scene reconstruction, and achieve accurate camera trajectory estimation from a sequence of rolling shutter images.
                     </div>
                 </div>
-                <div class='vspace-top'>
-                  <h1>Projects</h1>
-                </div>
-                <div class='row vspace-top'>
-                  <div class="col-sm-3">
-                        <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
-                            <source src="videos/mds_nerf_record3d_sheep.mp4" type="video/mp4">
-                        </video>
-                    </div>
-
-                    <div class="col">
-                        <div class='paper-title'>
-                          MDS-NeRF: Neural Radiance Fields with Monocular Depth Supervision
-                        </div>
-                        <div>
-                            <!-- <a href="https://sinoyou.github.io/nelf-pro/">[Project page]</a> -->
-                            <a href="https://moyangli00.github.io/mds_nerf/">[Project page]</a>
-                            <a href="https://github.com/MoyangLi00/MDS-NeRF">[Code]</a>
-                        </div>
-                        We utilize affine-invariant depth supervision to address the messy geometry of few-shot scene reconstruction.
-                        Our method could estimate the scales and offsets of monocular depth, realize high-quality scene reconstruction with only a few images.
-                    </div>
-                </div>
-                
-              <div class='row vspace-top'>
-                <div class="col-sm-3">
-                  <video width="100%" playsinline="" autoplay="" loop="" preload="" muted="">
-                      <source src="videos/real_rocks_point_light.mp4" type="video/mp4">
-                  </video>
-              </div>
-
-                <div class="col">
-                  <div class='paper-title'>
-                    Dynamic Lighting in Neural Radiance Fields
-                  </div>
-                  <div>
-                  </div>
-                  We employ physically-based rendering to decompose the scene into illumination, material, and geometry components. 
-                  By modelling the illumination with the combination of hemispherical light sources and an environment map, 
-                  our method can eliminate heavy shadows caused by uneven lighting and improve the quality of scene reconstruction.
-              </div>
-            </div>
         </div>
     </div>
 
     <div id='footer' class='vspace-top'>
-    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col offset-sm-1 footer-inner">
+                    <div class="visitor-map">
+                        <div class="visitor-map-label">Visitors</div>
+                        <a class="visitor-map-widget" href="https://clustrmaps.com/site/1c9yu" title="Visit tracker">
+                            <img src="//clustrmaps.com/map_v2.png?cl=eaeaea&w=a&t=n&d=-A2VP13mL-Sy1wX4D_8SF49EZV18P7IwPBd3aAfN0ZU&co=ffffff" alt="Visitor map">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
+
+    <!-- Dark/light mode toggle -->
+    <script>
+      (function () {
+        var btn = document.getElementById('theme-toggle');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          var current = document.documentElement.getAttribute('data-theme') || 'light';
+          var next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          try { localStorage.setItem('theme', next); } catch (e) {}
+        });
+      })();
+    </script>
+
+    <!-- Click-to-load YouTube embeds (avoids hitting YouTube on every page load) -->
+    <script>
+      (function () {
+        function activate(el) {
+          var id = el.getAttribute('data-yt-id');
+          if (!id || el.dataset.activated === '1') return;
+          el.dataset.activated = '1';
+          var iframe = document.createElement('iframe');
+          iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+          iframe.setAttribute('allowfullscreen', '');
+          iframe.src = 'https://www.youtube-nocookie.com/embed/' + id +
+            '?autoplay=1&mute=1&loop=1&playlist=' + id +
+            '&controls=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3';
+          el.innerHTML = '';
+          el.appendChild(iframe);
+        }
+        document.querySelectorAll('.yt-lite').forEach(function (el) {
+          el.addEventListener('click', function () { activate(el); });
+          el.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(el); }
+          });
+        });
+      })();
+    </script>
 </body>
 
 </html>

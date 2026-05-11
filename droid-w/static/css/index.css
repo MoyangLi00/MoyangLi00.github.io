@@ -452,18 +452,18 @@ h6 {
   filter: grayscale(1) brightness(0.85) saturate(0) !important;
 }
 
-/* Scene tabs: left-to-right gradient series */
-.video-compare-tabs--top .scene-tab:nth-child(1) { --tab-h: 10; }
-.video-compare-tabs--top .scene-tab:nth-child(2) { --tab-h: 60; }
-.video-compare-tabs--top .scene-tab:nth-child(3) { --tab-h: 110; }
-.video-compare-tabs--top .scene-tab:nth-child(4) { --tab-h: 160; }
-.video-compare-tabs--top .scene-tab:nth-child(5) { --tab-h: 210; }
-.video-compare-tabs--top .scene-tab:nth-child(6) { --tab-h: 260; }
-.video-compare-tabs--top .scene-tab:nth-child(7) { --tab-h: 310; }
+/* Scene tabs: warm sunset → twilight palette (coral → violet) */
+.video-compare-tabs--top .scene-tab:nth-child(1) { --tab-h: 12;  }  /* Ball           — coral  */
+.video-compare-tabs--top .scene-tab:nth-child(2) { --tab-h: 35;  }  /* Crowd          — amber  */
+.video-compare-tabs--top .scene-tab:nth-child(3) { --tab-h: 48;  }  /* Person Track   — gold   */
+.video-compare-tabs--top .scene-tab:nth-child(4) { --tab-h: 85;  }  /* Tom Yum        — sage   */
+.video-compare-tabs--top .scene-tab:nth-child(5) { --tab-h: 175; }  /* Tokyo Walking  — teal   */
+.video-compare-tabs--top .scene-tab:nth-child(6) { --tab-h: 215; }  /* walking_static — sky    */
+.video-compare-tabs--top .scene-tab:nth-child(7) { --tab-h: 275; }  /* walking_xyz    — violet */
 
-/* Mode tabs (Images/Depth): two-color gradient */
-.video-compare-mode-tabs .mode-tab:nth-child(1) { --tab-h: 200; }
-.video-compare-mode-tabs .mode-tab:nth-child(2) { --tab-h: 20; }
+/* Mode tabs (Images = warm RGB / Depth = cool blue) */
+.video-compare-mode-tabs .mode-tab:nth-child(1) { --tab-h: 25;  }  /* Images — warm  */
+.video-compare-mode-tabs .mode-tab:nth-child(2) { --tab-h: 210; }  /* Depth  — cool  */
 
 .video-compare-panels .video-compare-panel {
   display: none;
@@ -508,4 +508,63 @@ h6 {
   .publication-links span {
     font-size: 0.95rem;
   }
+}
+
+/* ============================================================
+   Top hero — gentle hover motion on hyperlinks.
+   Author names: smooth color shift + animated underline.
+   Action buttons (Paper / arXiv / Code / Data): subtle lift.
+   ============================================================ */
+
+/* Author links: animated underline that grows from left on hover */
+.publication-authors a {
+  position: relative;
+  display: inline-block;
+  transition: color 0.25s ease;
+}
+.publication-authors a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.3s ease;
+}
+.publication-authors a:hover {
+  text-decoration: none !important;
+}
+.publication-authors a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Action buttons in the hero (Paper / arXiv / Code / Data):
+   gentle lift + softer shadow + flipped color on hover */
+.publication-links .button.is-dark {
+  border: 1.5px solid #363636;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+.publication-links .button.is-dark:hover {
+  /* Flipped: dark fill → light fill, white text → dark text */
+  background-color: #ffffff;
+  color: #363636;
+  border-color: #363636;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(20, 30, 40, 0.15);
+}
+.publication-links .button.is-dark:hover .icon,
+.publication-links .button.is-dark:hover .icon i {
+  color: #363636;
+}
+.publication-links .button.is-dark:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(20, 30, 40, 0.12);
 }
